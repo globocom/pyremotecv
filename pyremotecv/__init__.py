@@ -13,7 +13,7 @@ import datetime
 from tornado import ioloop
 import bson
 import zmq
-import zmq.eventloop
+import zmq.eventloop.zmqstream
 
 # version is here for people to query for the library version upon install
 from pyremotecv.version import version, Version, __version__
