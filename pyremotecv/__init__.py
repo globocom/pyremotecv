@@ -10,10 +10,13 @@
 
 import datetime
 
-from tornado import ioloop
-import bson
-import zmq
-import zmq.eventloop.zmqstream
+try:
+    from tornado import ioloop
+    import bson
+    import zmq
+    import zmq.eventloop.zmqstream
+except ImportError, err:
+    print "WARNING: error importing some lib. This might be due to setup.py importing this module. Error: %s" % str(err)
 
 # version is here for people to query for the library version upon install
 from pyremotecv.version import version, Version, __version__
