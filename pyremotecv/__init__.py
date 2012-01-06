@@ -54,9 +54,9 @@ class PyRemoteCV(object):
             else:
                 callback([])
 
-        def on_timeout(self):
-            self.stream.close()
-            self.callback(None)
+        def on_timeout():
+            stream.close()
+            callback(None)
 
         ctx = cls.get_context()
 
