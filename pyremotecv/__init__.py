@@ -15,6 +15,9 @@ import bson
 import zmq
 import zmq.eventloop
 
+# version is here for people to query for the library version upon install
+from pyremotecv.version import version, Version, __version__
+
 
 class PyRemoteCV(object):
     zmq_ctx = None
