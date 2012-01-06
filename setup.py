@@ -11,10 +11,12 @@
 from setuptools import setup, find_packages
 from pyremotecv.version import version
 
+description = "pyremotecv is a client library for remotecv (https://github.com/globocom/remotecv/wiki)."
+
 setup(
     name = 'pyremotecv',
     version = version,
-    description = "pyremotecv is a client library for remotecv (https://github.com/globocom/remotecv/wiki).",
+    description = description,
     long_description = description,
     keywords = 'facial feature detection opencv remote zeromq socket',
     author = 'Time Home',
@@ -29,11 +31,13 @@ setup(
                    'Operating System :: POSIX :: Linux',
                    'Programming Language :: Python :: 2.6',
     ],
+
     packages = find_packages(),
 
     install_requires=[
         "pyzmq>=2.1.11,<2.2.0",
         "bson>=0.3.3,<0.4.0",
+        "tornado>=2.1.1,<2.2.0",
     ],
 
 )
