@@ -64,8 +64,8 @@ class PyRemoteCV(object):
         socket.connect(server)
         socket.setsockopt(zmq.LINGER, 0)
 
-        timeout_handle = ioloop.add_timeout(datetime.timedelta(seconds=timeout), on_timeout)
-        stream = zmq.eventloop.zmqstream.ZMQStream(socket, ioloop)
+        timeout_handle = loop.add_timeout(datetime.timedelta(seconds=timeout), on_timeout)
+        stream = zmq.eventloop.zmqstream.ZMQStream(socket, loop)
         stream.on_recv(on_result)
 
         msg = { 
