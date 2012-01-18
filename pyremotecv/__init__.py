@@ -8,76 +8,17 @@
 # http://www.opensource.org/licenses/mit-license
 # Copyright (c) 2012 globo.com timehome@corp.globo.com
 
-import datetime
-
-try:
-    from tornado import ioloop
-    import bson
-    import zmq
-    import zmq.eventloop.zmqstream
-except ImportError, err:
-    print "WARNING: error importing some lib. This might be due to setup.py importing this module. Error: %s" % str(err)
 
 # version is here for people to query for the library version upon install
 from pyremotecv.version import version, Version, __version__
+from pyremotecv.unique_queue import UniqueQueue
 
 
-class PyRemoteCV(object):
-    zmq_ctx = None
-
-    @classmethod
-    def get_context(cls):
-        if cls.zmq_ctx is None:
-            cls.zmq_ctx = zmq.Context()
-
-        return cls.zmq_ctx
+class PyRemoteCV:
+    queue = UniqueQueue()
 
     @classmethod
-    def async_detect_all(cls, server, image_size, image_bytes, callback, image_mode='RGB', timeout=20):
-        cls.async_detect('all', server, image_size, image_bytes, callback, image_mode, timeout)
-
-    @classmethod
-    def async_detect_faces(cls, server, image_size, image_bytes, callback, image_mode='RGB', timeout=20):
-        cls.async_detect('face', server, image_size, image_bytes, callback, image_mode, timeout)
-
-    @classmethod
-    def async_detect_features(cls, server, image_size, image_bytes, callback, image_mode='RGB', timeout=20):
-        cls.async_detect('feat', server, image_size, image_bytes, callback, image_mode, timeout)
-
-    @classmethod
-    def async_detect(cls, action, server, image_size, image_bytes, callback, image_mode, timeout):
-        loop = ioloop.IOLoop.instance()
-
-        def on_result(data):
-            loop.remove_timeout(timeout_handle)
-            stream.close()
-            features = bson.loads(data[0])['points']
-            if features:
-                callback(features)
-            else:
-                callback([])
-
-        def on_timeout():
-            stream.close()
-            callback(None)
-
-        ctx = cls.get_context()
-
-        socket = ctx.socket(zmq.REQ)
-        socket.connect(server)
-        socket.setsockopt(zmq.LINGER, 0)
-
-        timeout_handle = loop.add_timeout(datetime.timedelta(seconds=timeout), on_timeout)
-        stream = zmq.eventloop.zmqstream.ZMQStream(socket, loop)
-        stream.on_recv(on_result)
-
-        msg = { 
-            'type': action,
-            'size': image_size,
-            'mode': image_mode,
-            'image': image_bytes
-        }
-
-        stream.send(bson.dumps(msg))
-
-
+    def async_detect(cls, class_name, queue_name, args=[], key=None):
+        cls.queue.enqueue_unique_from_string(class_name, queue_name,
+                args=args,
+                key=key)

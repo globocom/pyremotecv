@@ -35,9 +35,7 @@ setup(
     packages = find_packages(),
 
     install_requires=[
-        "pyzmq>=2.1.11,<2.2.0",
-        "bson>=0.3.3,<0.4.0",
-        "tornado>=2.1.1,<2.2.0",
+        "pyres>=1.1,<1.2"
     ],
 
 )
