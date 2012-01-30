@@ -8,14 +8,13 @@
 # http://www.opensource.org/licenses/mit-license
 # Copyright (c) 2012 globo.com timehome@corp.globo.com
 
-from redis import Redis
-
 # version is here for people to query for the library version upon install
 from pyremotecv.version import version, Version, __version__
 
 class PyRemoteCV:
 
     def __init__(self, host, port, db, password):
+        from redis import Redis
         from pyremotecv.unique_queue import UniqueQueue
         redis = Redis(host=host, port=port, db=db, password=password)
         self.queue = UniqueQueue(server=redis)
