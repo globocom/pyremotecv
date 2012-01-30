@@ -8,22 +8,19 @@
 # http://www.opensource.org/licenses/mit-license
 # Copyright (c) 2012 globo.com timehome@corp.globo.com
 
+from redis import Redis
 
 # version is here for people to query for the library version upon install
 from pyremotecv.version import version, Version, __version__
 
 class PyRemoteCV:
-    queue = None
 
-    @classmethod
-    def init_queue(cls):
+    def __init__(self, host, port, db, password):
         from pyremotecv.unique_queue import UniqueQueue
-        cls.queue = UniqueQueue()
+        redis = Redis(host=host, port=port, db=db, password=password)
+        self.queue = UniqueQueue(server=redis)
 
-    @classmethod
-    def async_detect(cls, class_name, queue_name, args=[], key=None):
-        if not cls.queue:
-            cls.init_queue()
-        cls.queue.enqueue_unique_from_string(class_name, queue_name,
+    def async_detect(self, class_name, queue_name, args=[], key=None):
+        self.queue.enqueue_unique_from_string(class_name, queue_name,
                 args=args,
                 key=key)
