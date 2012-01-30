@@ -13,6 +13,7 @@
 from pyremotecv.version import version, Version, __version__
 
 class PyRemoteCV:
+    queue = None
 
     @classmethod
     def init_queue(cls):
