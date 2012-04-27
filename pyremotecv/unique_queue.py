@@ -41,8 +41,8 @@ class UniqueQueue(ResQ):
 
 class UniqueWorker(Worker):
 
-    def __init__(self, queues=(), server="localhost:6379", password=None):
-        super(UniqueWorker, self).__init__(queues, UniqueQueue(server=server), password)
+    def __init__(self, queues=(), server="localhost:6379", password=None, timeout=None):
+        super(UniqueWorker, self).__init__(queues, UniqueQueue(server=server), password, timeout)
 
     def before_process(self, job):
         self.resq.del_unique_key(job._queue, job._payload['key'])
