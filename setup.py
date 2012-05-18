@@ -35,7 +35,7 @@ setup(
     packages = find_packages(),
 
     install_requires=[
-        "pyres>=1.1,<1.2"
+        "pyres>=1.2,<1.3"
     ],
 
 )
